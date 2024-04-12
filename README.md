@@ -1,16 +1,6 @@
 # bargraphtute
 
-A new Flutter project.
+Esse projeto foi apenas para estudar a utilização de um gráfico de barra
 
-## Getting Started
+![image](https://github.com/EdersonPinheiro/bargraphtute/assets/88673530/d50f882c-739f-45a9-9cc8-06d67d796edf)
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
