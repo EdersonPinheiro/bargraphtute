@@ -13,14 +13,26 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    Size screenSize = MediaQuery.of(context).size;
+
+    // Calcula a altura e largura do gráfico
+    double graphHeight = screenSize.height * 0.6; // 60% da altura da tela
+    double graphWidth = screenSize.width * 0.90; // 90% da largura da tela
+
     return Scaffold(
-      body: Center(
-        child: SizedBox(
-          height: 400,
-          child: BarGraph(
-            weeklySummary: weeklySumary,
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Center(
+            child: SizedBox(
+              height: graphHeight,
+              width: graphWidth,
+              child: BarGraph(
+                weeklySummary: weeklySumary,
+              ),
+            ),
           ),
-        ),
+        ],
       ),
     );
   }
