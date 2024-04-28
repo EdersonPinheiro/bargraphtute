@@ -1,4 +1,4 @@
-import 'package:bargraphtute/bar_graph/bar_data.dart';
+import 'package:bargraphtute/bar_graph/ultima_semana_bar_data.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -9,13 +9,14 @@ class BarGraph extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    BarData myBarData = BarData(
-      sunAmount: weeklySummary[0],
-      monAmount: weeklySummary[1],
-      wedAmount: weeklySummary[2],
-      thurAmount: weeklySummary[3],
-      friAmount: weeklySummary[4],
-      satAmount: weeklySummary[5],
+    
+    UltimaSemanaBarData myBarData = UltimaSemanaBarData(
+      segunda: weeklySummary[0],
+      terca: weeklySummary[1],
+      quarta: weeklySummary[2],
+      quinta: weeklySummary[3],
+      sexta: weeklySummary[4],
+      sabado: weeklySummary[5],
     );
 
     myBarData.initializeBarData();
@@ -26,17 +27,21 @@ class BarGraph extends StatelessWidget {
         fontWeight: FontWeight.bold,
         fontSize: 14,
       );
-      List<String> days = ['M', 'T', 'W', 'T', 'F', 'S', 'S'];
+      List<String> days = ['Seg', 'Ter', 'Quar', 'Quin', 'Sex', 'Sab'];
+
+      int index = value.toInt() % days.length;
 
       Widget text = Text(
-        days[value.toInt()],
+        days[index],
         style: style,
       );
 
-      return SideTitleWidget(
-        axisSide: AxisSide.bottom,
-        space: 16,
-        child: text,
+      return Container(
+        child: SideTitleWidget(
+          axisSide: AxisSide.bottom,
+          space: 16,
+          child: text,
+        ),
       );
     }
 
@@ -49,7 +54,7 @@ class BarGraph extends StatelessWidget {
               barRods: [
                 BarChartRodData(
                   toY: data.y,
-                  color: Colors.blue,
+                  color: Colors.blueAccent,
                   width: 35,
                   borderRadius: const BorderRadius.all(
                     Radius.circular(4),
@@ -61,14 +66,14 @@ class BarGraph extends StatelessWidget {
           )
           .toList(),
       titlesData: FlTitlesData(
-        show: true,
         bottomTitles: AxisTitles(
           sideTitles: SideTitles(
             showTitles: true,
             getTitlesWidget: getTitles,
-            reservedSize: 45,
+            reservedSize: 38,
           ),
         ),
+        show: true,
         topTitles: AxisTitles(
           sideTitles: SideTitles(
             showTitles: false,
