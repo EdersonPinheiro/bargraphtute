@@ -1,15 +1,18 @@
 import 'package:bargraphtute/bar_graph/ultima_semana_bar_data.dart';
+import 'package:bargraphtute/bar_graph/ultimos_tres_meses_bar_data.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class BarGraph extends StatelessWidget {
   final List weeklySummary;
-  const BarGraph({Key? key, required this.weeklySummary}) : super(key: key);
+  final String selectedDuration;
+  const BarGraph(
+      {Key? key, required this.weeklySummary, required this.selectedDuration})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    
     UltimaSemanaBarData myBarData = UltimaSemanaBarData(
       segunda: weeklySummary[0],
       terca: weeklySummary[1],
@@ -19,9 +22,17 @@ class BarGraph extends StatelessWidget {
       sabado: weeklySummary[5],
     );
 
+    UltimosTresMesesBarData ultimosTresMeses = UltimosTresMesesBarData(
+      primeiroMes: weeklySummary[0],
+      segundoMes: weeklySummary[1],
+      terceiroMes: weeklySummary[2],
+    );
+
     myBarData.initializeBarData();
 
-    Widget getTitles(double value, TitleMeta meta) {
+    ultimosTresMeses.initializeBarData();
+
+    Widget getUltimaSemana(double value, TitleMeta meta) {
       const style = TextStyle(
         color: Colors.black,
         fontWeight: FontWeight.bold,
@@ -45,31 +56,75 @@ class BarGraph extends StatelessWidget {
       );
     }
 
+    Widget getUltimosTresMeses(double value, TitleMeta meta) {
+      const style = TextStyle(
+        color: Colors.black,
+        fontWeight: FontWeight.bold,
+        fontSize: 14,
+      );
+      List<String> days = ['Fev', 'Març', 'Abril'];
+
+      int index = value.toInt() % days.length;
+
+      Widget text = Text(
+        days[index],
+        style: style,
+      );
+
+      return Container(
+        child: SideTitleWidget(
+          axisSide: AxisSide.bottom,
+          space: 16,
+          child: text,
+        ),
+      );
+    }
+
     return BarChart(BarChartData(
       maxY: 100,
       minY: 0,
-      barGroups: myBarData.barData
-          .map(
-            (data) => BarChartGroupData(
-              barRods: [
-                BarChartRodData(
-                  toY: data.y,
-                  color: Colors.blueAccent,
-                  width: 35,
-                  borderRadius: const BorderRadius.all(
-                    Radius.circular(4),
-                  ),
+      barGroups: selectedDuration == 'Ultimos 6 dias'
+          ? myBarData.barData
+              .map(
+                (data) => BarChartGroupData(
+                  barRods: [
+                    BarChartRodData(
+                      toY: data.y,
+                      color: Colors.blueAccent,
+                      width: 40,
+                      borderRadius: const BorderRadius.all(
+                        Radius.circular(4),
+                      ),
+                    ),
+                  ],
+                  x: data.x,
                 ),
-              ],
-              x: data.x,
-            ),
-          )
-          .toList(),
+              )
+              .toList()
+          : ultimosTresMeses.barData
+              .map(
+                (data) => BarChartGroupData(
+                  barRods: [
+                    BarChartRodData(
+                      toY: data.y,
+                      color: Colors.blueAccent,
+                      width: 65,
+                      borderRadius: const BorderRadius.all(
+                        Radius.circular(4),
+                      ),
+                    ),
+                  ],
+                  x: data.x,
+                ),
+              )
+              .toList(),
       titlesData: FlTitlesData(
         bottomTitles: AxisTitles(
           sideTitles: SideTitles(
             showTitles: true,
-            getTitlesWidget: getTitles,
+            getTitlesWidget: selectedDuration == 'Ultimos 6 dias'
+                ? getUltimaSemana
+                : getUltimosTresMeses,
             reservedSize: 38,
           ),
         ),
